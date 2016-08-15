@@ -45,7 +45,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, values);
         db.close();
     }
-    public boolean deleteItem(long id) { // !!!!!!!!!! ERRORS???? RETURN??
+    public boolean deleteItem(long id) {
         SQLiteDatabase db = getWritableDatabase();
         String where = ITEM_ID + "=" + id;
         return db.delete(TABLE_NAME, where, null) != 0;

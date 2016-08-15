@@ -1,5 +1,6 @@
 package com.example.bryan.focusredo;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,14 @@ public class MainActivity extends AppCompatActivity {
         addItem("Please work");
         populateListView();
     }
+    public void openEditor(boolean itemExists) {
+        Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+        intent.putExtra("itemExist", itemExists);
+        startActivity(intent);
+    }
+    public void openEditorForNewNote(View view) {
+        openEditor(true);
+    }
     public void addItem(String text) {
         dbOpenHelper.getWritableDatabase();
         dbOpenHelper.addItem(text);
@@ -40,10 +49,9 @@ public class MainActivity extends AppCompatActivity {
             String text = editText.getText().toString();
             dbOpenHelper.updateRow(id, text);
         }
+        populateListView();
         cursor.close();
     }
-    //read
-    //print table ^ reads all the data from the database and prints it
     private void setListViewItemClick() {
         ListView listView = (ListView) findViewById(R.id.main_activity_list_view);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -60,11 +68,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long id) {
                 deleteItem(id);
+                populateListView();
                 return false;
             }
         });
     }
-
     public void deleteAllItems(View view) {
         dbOpenHelper.deleteAllItems();
         populateListView();
