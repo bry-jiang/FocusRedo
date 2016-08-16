@@ -178,4 +178,16 @@ public class MainActivity extends AppCompatActivity {
         TodayEmptyFragment todayEmptyFragment = new TodayEmptyFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.today_container3, todayEmptyFragment).commit();
     }
+    private void initToday() {
+        Cursor cursor = dbOpenHelper.getAllRows();
+        ;
+        if (cursor.moveToFirst()) {
+            for (cursor.getCount(); cursor) {//use a forloop to iterate through the data
+                int usedToday = cursor.getInt(cursor.getColumnIndex(DBOpenHelper.ITEM_USED_TODAY);
+                if(usedToday == 1) {
+                    //
+                }
+            }
+        }
+    }
 }
