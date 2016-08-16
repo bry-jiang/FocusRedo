@@ -39,19 +39,22 @@
                 android:layout_height="100dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="A" />
+                android:text="A"
+                android:onClick="setImportanceA" />
             <Button
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="B" />
+                android:text="B"
+                android:onClick="setImportanceB" />
             <Button
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="C" />
+                android:text="C"
+                android:onClick="setImportanceC" />
         </LinearLayout>
 
         <TextView
@@ -77,7 +80,9 @@
             android:layout_height="100dp"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
-            android:text="Placeholder for time/deadline" />
+            android:text="Save(Temporary) - Deadline"
+            android:id="@+id/save_id"
+            android:onClick="saveItem" />
 
     </LinearLayout>
 
