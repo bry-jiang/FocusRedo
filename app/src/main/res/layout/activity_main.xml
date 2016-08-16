@@ -4,45 +4,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.bryan.focusredo.MainActivity">
-
-    <ListView
-        android:id="@+id/main_activity_list_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
-    <at.markushi.ui.CircleButton
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        app:cb_color="@color/colorAccent"
-        app:cb_pressedRingWidth="8dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/plus"
-        android:onClick="openEditorForNewNote"/>
+        android:layout_height="450dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:id="@+id/main_activity_id">
+        <ListView
+            android:id="@+id/main_activity_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+        <at.markushi.ui.CircleButton
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:cb_color="@color/colorAccent"
+            app:cb_pressedRingWidth="8dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/plus"
+            android:onClick="openEditorForNewNote"
+            android:layout_margin="16dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="deleteAllItems" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete All Items"
+            android:id="@+id/button"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="deleteAllItems"
+            android:layout_marginBottom="16dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add new Item"
+            android:id="@+id/new_item"
+            android:nestedScrollingEnabled="false"
+            android:onClick="addDefault"
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
+    <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add new Item"
-        android:id="@+id/new_item"
-        android:nestedScrollingEnabled="false"
-        android:onClick="addDefault"
-        android:layout_alignTop="@+id/button"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>
