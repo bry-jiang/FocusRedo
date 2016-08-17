@@ -1,9 +1,11 @@
 package com.example.bryan.focusredo;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,7 +17,6 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
 import layout.FinishedFragment;
 import layout.MasterListFragment;
-import layout.TodayEmptyFragment;
 import layout.TodayFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
         setListViewItemLongClick();
 
         initBar();
-
-        populateListView();
     }
     @Override
     public void onResume() {
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
-                openEditor(id);
+                setAsToday(id);
             }
         });
     }
@@ -75,8 +74,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long id) {
-                deleteItem(id);
-                populateListView();
+                openEditor(id);
                 return false;
             }
         });
@@ -97,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(simpleCursorAdapter);
     }
 
-    private void initBar() { // The bottom bar's height is 60dp remember to add 60dp as a bottom padding to all fragments
+    private void initBar() {
 
 // Create items
         AHBottomNavigationItem item1 = new AHBottomNavigationItem("Today", R.drawable.goal, R.color.colorPrimary);
@@ -163,31 +161,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void setEmpty1(View view) {
-        TodayEmptyFragment todayEmptyFragment = new TodayEmptyFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.today_container1, todayEmptyFragment).commit();
+    private void setAsToday(final long id) {
+        DialogInterface.OnClickListener dialogClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        dbOpenHelper.setAsToday(id, button + 1);
+                    }
+                };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("What order do you wish to set this item in?");
+        builder.setItems(new CharSequence[]
+                {"1"})
 
-    }
-
-    public void setEmpty2(View view) {
-        TodayEmptyFragment todayEmptyFragment = new TodayEmptyFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.today_container2, todayEmptyFragment).commit();
-    }
-
-    public void setEmpty3(View view) {
-        TodayEmptyFragment todayEmptyFragment = new TodayEmptyFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.today_container3, todayEmptyFragment).commit();
-    }
-    private void initToday() {
-        Cursor cursor = dbOpenHelper.getAllRows();
-        ;
-        if (cursor.moveToFirst()) {
-            for (cursor.getCount(); cursor) {//use a forloop to iterate through the data
-                int usedToday = cursor.getInt(cursor.getColumnIndex(DBOpenHelper.ITEM_USED_TODAY);
-                if(usedToday == 1) {
-                    //
-                }
-            }
-        }
     }
 }

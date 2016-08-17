@@ -12,10 +12,21 @@ public class EditorActivity extends AppCompatActivity {
     boolean isNew;
     long id;
 
+    String text;
+    int deadLine;
+    int importance;
+    int tag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+
+        text = "";
+        deadLine = 0;
+        importance = 0;
+        tag = 0;
+
 
         dbOpenHelper = new DBOpenHelper(this);
 
@@ -29,19 +40,40 @@ public class EditorActivity extends AppCompatActivity {
         } else {
             Cursor cursor = dbOpenHelper.getRow(id);
             if (cursor.moveToFirst()) {
-                String existingText = cursor.getString(cursor.getColumnIndex(DBOpenHelper.ITEM_TEXT));
-                editText.setText(existingText);
+                text = cursor.getString(cursor.getColumnIndex(DBOpenHelper.ITEM_TEXT));
+                editText.setText(text);
+
+                deadLine = cursor.getInt(cursor.getColumnIndex(DBOpenHelper.ITEM_DEADLINE)); // do a setcolor or something to indicate that these are already selected
+                importance = cursor.getInt(cursor.getColumnIndex(DBOpenHelper.ITEM_IMPORTANCE));
+                tag = cursor.getInt(cursor.getColumnIndex(DBOpenHelper.ITEM_TAG));
             }
             cursor.close();
         }
     }
 
+    public void setDeadline (View view) {
+        deadLine = 1;
+    }
+
+    public void setImportanceA (View view) {
+        importance = 1;
+    }
+    public void setImportanceB (View view) {
+        importance = 2;
+    }
+    public void setImportanceC (View view) {
+        importance = 3;
+    }
+    public void setTag (View view) {
+        tag = 1;
+    }
+
     public void saveItem(View view) {
         String newText = editText.getText().toString();
         if (isNew) {
-            dbOpenHelper.addItem(newText, 2, 2, 2, 2);
+            dbOpenHelper.addItem(newText, deadLine, 0, importance, tag);
         } else {
-            dbOpenHelper.updateRow(id, newText, 2, 2, 2, 2);
+            dbOpenHelper.updateRow(id, newText, deadLine, 0, importance, tag);
         }
     }
 }

@@ -76,6 +76,14 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         values.put(ITEM_TAG, tag);
         return db.update(TABLE_NAME, values, where, null) != 0;
     }
+    public void setAsToday(long id, int row) {
+        SQLiteDatabase db = getReadableDatabase();
+        String where = id + "=" + ITEM_ID;
+        ContentValues values = new ContentValues();
+        values.put(ITEM_USED_TODAY, row);
+        db.update(TABLE_NAME, values, where, null);
+        //add code for if another item is also has the same value and will be used in the same location in Today
+    }
     public Cursor getRow(long id) {
         SQLiteDatabase db = getReadableDatabase();
         String where = id + "=" + ITEM_ID;
