@@ -1,18 +1,12 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="layout.TodayItem1Fragment">
+    tools:context="layout.TodayItem1Fragment"
+    android:clickable="true"
+    android:background="#ffffff">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="#00000000" >
-
-        <ImageButton
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageButton4"
@@ -27,7 +21,8 @@
             android:text="Place Holder"
             android:id="@+id/PlaceHolder1"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_toRightOf="@+id/imageButton4"
+            android:layout_toEndOf="@+id/imageButton4" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -36,26 +31,27 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" >
 
-            <Button
+            <ImageButton
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Edit"
+                android:src="@drawable/trash"
                 android:id="@+id/button17"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:onClick="setEmpty1"/>
 
-            <Button
+            <ImageButton
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Complete"
-                android:id="@+id/button18"
+                android:src="@drawable/checkwhite"
+                android:id="@+id/complete1"
                 android:layout_alignTop="@+id/PlaceHolder1"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_weight="1"
-                android:onClick="setEmpty" />
+                android:nestedScrollingEnabled="false"
+                android:onClick="setFinished1" />
         </LinearLayout>
-    </RelativeLayout>
-</FrameLayout>
+</RelativeLayout>

@@ -28,16 +28,6 @@
             android:onClick="openEditorForNewNote"
             android:layout_margin="16dp"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delete All Items"
-            android:id="@+id/button"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:onClick="deleteAllItems"
-            android:layout_marginBottom="16dp"/>
-
     </RelativeLayout>
 
     <com.aurelhubert.ahbottomnavigation.AHBottomNavigation

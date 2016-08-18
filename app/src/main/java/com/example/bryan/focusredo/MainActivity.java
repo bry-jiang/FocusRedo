@@ -33,11 +33,13 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
 
         dbOpenHelper = new DBOpenHelper(this);
+
         setListViewItemClick();
         setListViewItemLongClick();
 
         initBar();
     }
+
     @Override
     public void onResume() {
         super.onResume();  // Always call the superclass method first
@@ -162,17 +164,119 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setAsToday(final long id) {
-        DialogInterface.OnClickListener dialogClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int button) {
-                        dbOpenHelper.setAsToday(id, button + 1);
-                    }
-                };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("What order do you wish to set this item in?");
+        builder.setTitle("What order do you wish to set this item in?");
         builder.setItems(new CharSequence[]
-                {"1"})
-
+                {"1", "2", "3"}, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int button) {
+                switch (button + 1) {
+                    case 1: setEmpty1(null);
+                        break;
+                    case 2: setEmpty2(null);
+                        break;
+                    case 3: setEmpty3(null);
+                }
+                dbOpenHelper.setAsToday(id, button + 1);
+            }
+        }
+        );
+        builder.create().show();
+    }
+    public void setEmpty1 (View view) {
+        Cursor cursor = dbOpenHelper.getAllRows();
+        int usedToday = 0;
+        if(cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
+                if (usedToday == 1 || usedToday == -1) {
+                    dbOpenHelper.setAsToday(cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_ID)), 0);
+                }
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        restartToday();
+    }
+    public void setEmpty2 (View view) {
+        Cursor cursor = dbOpenHelper.getAllRows();
+        int usedToday = 0;
+        if(cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
+                if (usedToday == 2 || usedToday == -2) {
+                    dbOpenHelper.setAsToday(cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_ID)), 0);
+                }
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        restartToday();
+    }
+    public void setEmpty3 (View view) {
+        Cursor cursor = dbOpenHelper.getAllRows();
+        int usedToday = 0;
+        if(cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
+                if (usedToday == 3 || usedToday == -3) {
+                    dbOpenHelper.setAsToday(cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_ID)), 0);
+                }
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        restartToday();
+    }
+    public void setFinished1 (View view) {
+        Cursor cursor = dbOpenHelper.getAllRows();
+        int usedToday = 0;
+        if(cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
+                if (usedToday == 1) {
+                    dbOpenHelper.setAsToday(cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_ID)), -1);
+                }
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        restartToday();
+    }
+    public void setFinished2 (View view) {
+        Cursor cursor = dbOpenHelper.getAllRows();
+        int usedToday = 0;
+        if(cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
+                if (usedToday == 2) {
+                    dbOpenHelper.setAsToday(cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_ID)), -2);
+                }
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        restartToday();
+    }
+    public void setFinished3 (View view) {
+        Cursor cursor = dbOpenHelper.getAllRows();
+        int usedToday = 0;
+        if(cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
+                if (usedToday == 3) {
+                    dbOpenHelper.setAsToday(cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_ID)), -3);
+                }
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        restartToday();
+    }
+    public void restartToday() {
+        MasterListFragment masterListFragment = new MasterListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_id, masterListFragment).commit();
+        TodayFragment todayFragment = new TodayFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_id, todayFragment).commit();
     }
 }

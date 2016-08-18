@@ -3,6 +3,8 @@ package com.example.bryan.focusredo;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -41,7 +43,7 @@ public class EditorActivity extends AppCompatActivity {
             Cursor cursor = dbOpenHelper.getRow(id);
             if (cursor.moveToFirst()) {
                 text = cursor.getString(cursor.getColumnIndex(DBOpenHelper.ITEM_TEXT));
-                editText.setText(text);
+                editText.setText(text.trim());
 
                 deadLine = cursor.getInt(cursor.getColumnIndex(DBOpenHelper.ITEM_DEADLINE)); // do a setcolor or something to indicate that these are already selected
                 importance = cursor.getInt(cursor.getColumnIndex(DBOpenHelper.ITEM_IMPORTANCE));
@@ -49,6 +51,18 @@ public class EditorActivity extends AppCompatActivity {
             }
             cursor.close();
         }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_editor, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        dbOpenHelper.deleteItem(id);
+        editText.setText("");
+        return true;
     }
 
     public void setDeadline (View view) {

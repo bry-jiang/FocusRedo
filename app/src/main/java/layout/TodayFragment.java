@@ -14,7 +14,7 @@ import com.example.bryan.focusredo.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TodayFragment extends Fragment {
+public class TodayFragment extends Fragment{
     DBOpenHelper dbOpenHelper;
 
     public TodayFragment() {
@@ -28,8 +28,12 @@ public class TodayFragment extends Fragment {
         setEmpty1();
         setEmpty2();
         setEmpty3();
+
         initToday();
-        return inflater.inflate(R.layout.fragment_today, container, false);
+        View view = inflater.inflate(R.layout.fragment_today, container, false);
+
+        return view;
+
     }
     public void setEmpty1() {
         TodayEmptyFragment todayEmptyFragment = new TodayEmptyFragment();
@@ -44,36 +48,63 @@ public class TodayFragment extends Fragment {
         getChildFragmentManager().beginTransaction().replace(R.id.today_container3, todayEmptyFragment).commit();
     }
 
-    private void initToday() {
+    public void initToday() {
         Cursor cursor = dbOpenHelper.getAllRows();
         int usedToday = 0;
         if(cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
+                if (usedToday == -1) {
+                    setFinished1();
+                }
+                if (usedToday == -2) {
+                    setFinished2();
+                }
+                if (usedToday == -3) {
+                    setFinished3();
+                }
                 if (usedToday == 1) {
-                    setToday1(null);
+                    setToday1();
                 }
                 if (usedToday == 2) {
-                    setToday2(null);
+                    setToday2();
                 }
                 if (usedToday == 3) {
-                    setToday3(null);
+                    setToday3();
                 }
+
                 cursor.moveToNext();
             }
         }
     }
 
-    private void setToday1 (View view) {
+    private void setToday1 () {
         TodayItem1Fragment item = new TodayItem1Fragment();
+        getChildFragmentManager().beginTransaction().detach(item).attach(item).commit();
         getChildFragmentManager().beginTransaction().replace(R.id.today_container1, item).commit();
     }
-    private void setToday2 (View view) {
+    private void setToday2 () {
         TodayItem2Fragment item = new TodayItem2Fragment();
+        getChildFragmentManager().beginTransaction().detach(item).attach(item).commit();
         getChildFragmentManager().beginTransaction().replace(R.id.today_container2, item).commit();
     }
-    private void setToday3 (View view) {
+    private void setToday3 () {
         TodayItem3Fragment item = new TodayItem3Fragment();
+        getChildFragmentManager().beginTransaction().detach(item).attach(item).commit();
         getChildFragmentManager().beginTransaction().replace(R.id.today_container3, item).commit();
     }
+
+    private void setFinished1() {
+        FinishedItemFragment finishedItemFragment = new FinishedItemFragment();
+        getChildFragmentManager().beginTransaction().replace(R.id.today_container1, finishedItemFragment).commit();
+    }
+    private void setFinished2() {
+        FinishedItemFragment finishedItemFragment = new FinishedItemFragment();
+        getChildFragmentManager().beginTransaction().replace(R.id.today_container2, finishedItemFragment).commit();
+    }
+    private void setFinished3() {
+        FinishedItemFragment finishedItemFragment = new FinishedItemFragment();
+        getChildFragmentManager().beginTransaction().replace(R.id.today_container3, finishedItemFragment).commit();
+    }
+
 }
