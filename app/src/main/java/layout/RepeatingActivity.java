@@ -24,7 +24,7 @@ public class RepeatingActivity extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("it worked", "we are here");
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.orca);
+        mediaPlayer = MediaPlayer.create(this, R.raw.notification_ring);
         mediaPlayer.start();
 
         return START_NOT_STICKY;

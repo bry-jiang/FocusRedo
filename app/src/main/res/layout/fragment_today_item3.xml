@@ -53,8 +53,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="16dp"
-        android:layout_toEndOf="@+id/relativeLayout"
         android:layout_toRightOf="@+id/relativeLayout"
+        android:layout_toLeftOf="@+id/complete3"
         android:text="Place Holder"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -83,6 +83,6 @@
         android:background="#f09999"
         android:onClick="setEmpty3"
         android:scaleType="fitCenter"
-        android:src="@drawable/trash" />
+        android:src="@drawable/undo"/>
 
 </RelativeLayout>

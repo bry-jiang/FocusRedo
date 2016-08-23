@@ -41,25 +41,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setTitle("Focus.");
+
 
         bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
 
+
         dbOpenHelper = new DBOpenHelper(this);
+        initBar();
+        startOnToday();
 
         setListViewItemClick();
         setListViewItemLongClick();
-
-        initBar();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    private void startOnToday() {
+        TodayFragment todayFragment = new TodayFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_id, todayFragment).commit();
     }
 
     @Override
     public void onResume() {
         super.onResume();  // Always call the superclass method first
         populateListView();
-}
+
+    }
 
     public void openEditor(long id) {
         Intent intent = new Intent(MainActivity.this, EditorActivity.class);
@@ -76,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
-                setAsToday(id);
+                openEditor(id);
+
             }
         });
     }
@@ -86,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long id) {
-                openEditor(id);
+                setAsToday(id);
                 return true;
             }
         });
@@ -100,16 +110,14 @@ public class MainActivity extends AppCompatActivity {
         simpleCursorAdapter = new SimpleCursorAdapter(getBaseContext(), R.layout.list_item_layout, cursor, from, to, 0);
         ListView listView = (ListView) findViewById(R.id.main_activity_list_view);
         listView.setAdapter(simpleCursorAdapter);
-
+        cursor.close();
     }
-    private void initBar() {
 
-// Create items
+    private void initBar() {
         AHBottomNavigationItem item1 = new AHBottomNavigationItem("Today", R.drawable.goal, R.color.colorPrimary);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem("Master List", R.drawable.crown, R.color.colorAccent);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem("Finished", R.drawable.check, R.color.colorBottomNavigationAccent);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem("Reminder", R.drawable.reminder, R.color.colorBottomNavigationAccent);
 
-// Add items
         bottomNavigation.addItem(item1);
         bottomNavigation.addItem(item2);
         bottomNavigation.addItem(item3);
@@ -122,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
 // Change colors
         bottomNavigation.setAccentColor(Color.parseColor("#F63D2B"));
-        bottomNavigation.setInactiveColor(Color.parseColor("#747474"));
+        bottomNavigation.setInactiveColor(Color.parseColor("#F63D2B"));
 
 // Force to tint the drawable (useful for font with icon for example)
         bottomNavigation.setForceTint(true);
@@ -134,14 +142,11 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.setColored(true);
 
 // Set current item programmatically
-        bottomNavigation.setCurrentItem(1);
+        bottomNavigation.setCurrentItem(0);
 
 // Customize notification (title, background, typeface)
         bottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
 
-// Add or remove notification for each item
-        bottomNavigation.setNotification("4", 1);
-        bottomNavigation.setNotification("", 1);
 
 // Set listeners
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
@@ -300,6 +305,7 @@ public class MainActivity extends AppCompatActivity {
         TodayFragment todayFragment = new TodayFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_id, todayFragment).commit();
     }
+
     public void TodayEmptyMessage(View view) {
         Toast.makeText(MainActivity.this, "Go to the master list tab to choose a task to add here.", Toast.LENGTH_SHORT).show();
     }

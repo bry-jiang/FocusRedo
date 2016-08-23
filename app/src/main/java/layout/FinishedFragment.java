@@ -36,7 +36,8 @@ public class FinishedFragment extends Fragment {
         timePicker = (TimePicker) view.findViewById(R.id.timePicker);
 
         final Button setAlarm = (Button) view.findViewById(R.id.setAlarm);
-        final Button unsetAlarm = (Button) view.findViewById(R.id.unsetAlarm);
+        Button unsetAlarm = (Button) view.findViewById(R.id.unsetAlarm);
+
         final Calendar calendar = Calendar.getInstance();
 
         setAlarm.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +78,7 @@ public class FinishedFragment extends Fragment {
         unsetAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alarmText.setText("Alarm is unset");
+                alarmText.setText("Alarm unset");
                 alarmManager.cancel(pendingIntent);
             }
         });

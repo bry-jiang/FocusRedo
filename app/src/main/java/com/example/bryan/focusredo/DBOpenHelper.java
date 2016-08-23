@@ -96,14 +96,4 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         }
         return cursor;
     }
-    public void deleteAllItems() {
-        Cursor cursor = getAllRows();
-        long id = cursor.getColumnIndexOrThrow(ITEM_ID);
-        if (cursor.moveToFirst()) {
-            do {
-                deleteItem(cursor.getLong((int)id));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-    }
 }

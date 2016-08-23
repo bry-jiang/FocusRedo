@@ -2,10 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="layout.FinishedFragment"
     android:background="#ffffff"
     android:clickable="true">
-
 
     <TimePicker
         android:layout_width="wrap_content"
@@ -15,23 +15,24 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set Alarm"
-        android:id="@+id/setAlarm"
-        android:layout_below="@+id/timePicker"
+    <at.markushi.ui.CircleButton
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:cb_color="@color/colorAccent"
+        app:cb_pressedRingWidth="8dp"
+        android:src="@drawable/plus"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp"
-        android:onClick="setAlarm" />
+        android:id="@+id/button4" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Unset Alarm"
-        android:id="@+id/unsetAlarm"
-        android:layout_alignTop="@+id/setAlarm"
+    <at.markushi.ui.CircleButton
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:cb_color="@color/colorAccent"
+        app:cb_pressedRingWidth="8dp"
+        android:src="@drawable/minus"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -41,6 +42,26 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Alarm unset"
         android:id="@+id/alarmText"
-        android:layout_above="@+id/unsetAlarm"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/timePicker"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="#00ffffff"
+        android:id="@+id/unsetAlarm"/>
+
+    <Button
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="#00ffffff"
+        android:src="@drawable/plus"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/setAlarm"/>
 </RelativeLayout>

@@ -16,28 +16,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:onClick="setName">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Hi Bryan :)"
-                android:id="@+id/textView"
+                android:text="Large Text"
+                android:id="@+id/largeText"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:textSize="45dp" />
+                android:textSize="40dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Tasks to dominate for today:"
-                android:id="@+id/textView2"
+                android:text="Small Text"
+                android:id="@+id/smallText"
                 android:layout_alignParentBottom="true"
-                android:layout_alignLeft="@+id/textView"
-                android:layout_alignStart="@+id/textView" />
+                android:layout_alignLeft="@+id/largeText"
+                android:layout_alignStart="@+id/largeText" />
 
         </RelativeLayout>
 

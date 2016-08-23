@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.bryan.focusredo.DBOpenHelper;
 import com.example.bryan.focusredo.R;
@@ -13,24 +14,42 @@ import com.example.bryan.focusredo.R;
 public class TodayFragment extends Fragment{
     DBOpenHelper dbOpenHelper;
 
+    TextView largeText;
+    TextView smallText;
+
     public TodayFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_today, container, false);
         dbOpenHelper = new DBOpenHelper(getActivity());
         setEmpty1();
         setEmpty2();
         setEmpty3();
 
         initToday();
-        View view = inflater.inflate(R.layout.fragment_today, container, false);
+
+        setLargeText(view);
+        setSmallText(view);
 
         return view;
 
     }
+
+    private void setSmallText(View view) {
+        smallText = (TextView) view.findViewById(R.id.smallText);
+        String[] smallOptions = {"Tasks to Dominate:", "Easy Peasy Lemon Squeezy:", "Follow through:", "Worth the sweat:"};
+        smallText.setText(smallOptions[chooseRandom(smallOptions.length)]);
+    }
+
+    private void setLargeText(View view) {
+        largeText = (TextView) view.findViewById(R.id.largeText);
+        String[] largeOptions = {"Stay Focused!", "Go get it!", "No Distractions.", "Laser Focus.", "Tunnel Vision.", "Ignore the Noise.", "Amaze Yourself."};
+        largeText.setText(largeOptions[chooseRandom(largeOptions.length)]);
+    }
+
     public void setEmpty1() {
         TodayEmptyFragment todayEmptyFragment = new TodayEmptyFragment();
         getChildFragmentManager().beginTransaction().replace(R.id.today_container1, todayEmptyFragment).commit();
@@ -79,5 +98,9 @@ public class TodayFragment extends Fragment{
         TodayItem3Fragment item = new TodayItem3Fragment();
         getChildFragmentManager().beginTransaction().detach(item).attach(item).commit();
         getChildFragmentManager().beginTransaction().replace(R.id.today_container3, item).commit();
+    }
+    private int chooseRandom(int size) {
+        int randomNum = (int) (Math.random() * size);
+        return randomNum;
     }
 }

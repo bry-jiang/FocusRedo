@@ -15,6 +15,8 @@ public class EditorActivity extends AppCompatActivity {
     long id;
     long databaseId;
 
+    int usedToday;
+
     String text;
     String importance;
     int urgency;
@@ -35,8 +37,10 @@ public class EditorActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.coolID);
 
         if (id == -1) {
+            setTitle("New task");
             isNew = true;
         } else {
+            setTitle("Edit task");
             Cursor cursor = dbOpenHelper.getRow(id);
             if (cursor.moveToFirst()) {
                 text = cursor.getString(cursor.getColumnIndex(DBOpenHelper.ITEM_TEXT));
@@ -47,6 +51,7 @@ public class EditorActivity extends AppCompatActivity {
                 urgency = cursor.getInt(cursor.getColumnIndex(DBOpenHelper.ITEM_URGENCY)); // do a setcolor or something to indicate that these are already selected
 
             }
+            usedToday = cursor.getInt(cursor.getColumnIndex(DBOpenHelper.ITEM_USED_TODAY));
             cursor.close();
         }
     }
@@ -88,6 +93,8 @@ public class EditorActivity extends AppCompatActivity {
         } else {
             if (newText.length() == 0) {
                 dbOpenHelper.deleteItem(databaseId);
+            } else{
+                dbOpenHelper.updateRow(databaseId, newText, importance, urgency, usedToday);
             }
 
         }
