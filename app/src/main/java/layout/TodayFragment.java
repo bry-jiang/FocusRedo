@@ -1,6 +1,5 @@
 package layout;
 
-
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,9 +10,6 @@ import android.view.ViewGroup;
 import com.example.bryan.focusredo.DBOpenHelper;
 import com.example.bryan.focusredo.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class TodayFragment extends Fragment{
     DBOpenHelper dbOpenHelper;
 
@@ -54,15 +50,6 @@ public class TodayFragment extends Fragment{
         if(cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
-                if (usedToday == -1) {
-                    setFinished1();
-                }
-                if (usedToday == -2) {
-                    setFinished2();
-                }
-                if (usedToday == -3) {
-                    setFinished3();
-                }
                 if (usedToday == 1) {
                     setToday1();
                 }
@@ -93,18 +80,4 @@ public class TodayFragment extends Fragment{
         getChildFragmentManager().beginTransaction().detach(item).attach(item).commit();
         getChildFragmentManager().beginTransaction().replace(R.id.today_container3, item).commit();
     }
-
-    private void setFinished1() {
-        FinishedItemFragment finishedItemFragment = new FinishedItemFragment();
-        getChildFragmentManager().beginTransaction().replace(R.id.today_container1, finishedItemFragment).commit();
-    }
-    private void setFinished2() {
-        FinishedItemFragment finishedItemFragment = new FinishedItemFragment();
-        getChildFragmentManager().beginTransaction().replace(R.id.today_container2, finishedItemFragment).commit();
-    }
-    private void setFinished3() {
-        FinishedItemFragment finishedItemFragment = new FinishedItemFragment();
-        getChildFragmentManager().beginTransaction().replace(R.id.today_container3, finishedItemFragment).commit();
-    }
-
 }

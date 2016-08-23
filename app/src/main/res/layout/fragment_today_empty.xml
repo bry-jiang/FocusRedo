@@ -2,7 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="layout.TodayEmptyFragment">
+    tools:context="layout.TodayEmptyFragment"
+    android:onClick="TodayEmptyMessage"
+    android:clickable="true">
 
     <ImageView
         android:layout_width="match_parent"
@@ -10,6 +12,5 @@
         android:id="@+id/imageView"
         android:src="@drawable/add"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:clickable="true" />
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

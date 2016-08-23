@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +12,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import layout.FinishedFragment;
 import layout.MasterListFragment;
@@ -25,10 +30,17 @@ public class MainActivity extends AppCompatActivity {
     SimpleCursorAdapter simpleCursorAdapter;
     AHBottomNavigation bottomNavigation;
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
 
@@ -38,18 +50,16 @@ public class MainActivity extends AppCompatActivity {
         setListViewItemLongClick();
 
         initBar();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
     public void onResume() {
         super.onResume();  // Always call the superclass method first
         populateListView();
-    }
-
-    public void deleteItem(long id) {
-        dbOpenHelper.deleteItem(id);
-        populateListView();
-    }
+}
 
     public void openEditor(long id) {
         Intent intent = new Intent(MainActivity.this, EditorActivity.class);
@@ -77,26 +87,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long id) {
                 openEditor(id);
-                return false;
+                return true;
             }
         });
     }
 
-    public void deleteAllItems(View view) {
-        dbOpenHelper.deleteAllItems();
-        populateListView();
-    }
-
-    public void populateListView() { //call this whenever one of the crud methods is called
+    public void populateListView() {
         Cursor cursor = dbOpenHelper.getAllRows();
-        startManagingCursor(cursor);
-        String[] from = new String[]{dbOpenHelper.ITEM_TEXT};
-        int[] to = new int[]{R.id.list_item_layout_text};
+
+        String[] from = new String[]{dbOpenHelper.ITEM_IMPORTANCE, dbOpenHelper.ITEM_URGENCY, dbOpenHelper.ITEM_TEXT};
+        int[] to = new int[]{R.id.list_item_layout_importance, R.id.list_item_layout_urgency, R.id.list_item_layout_text};
         simpleCursorAdapter = new SimpleCursorAdapter(getBaseContext(), R.layout.list_item_layout, cursor, from, to, 0);
         ListView listView = (ListView) findViewById(R.id.main_activity_list_view);
         listView.setAdapter(simpleCursorAdapter);
-    }
 
+    }
     private void initBar() {
 
 // Create items
@@ -167,26 +172,30 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("What order do you wish to set this item in?");
         builder.setItems(new CharSequence[]
-                {"1", "2", "3"}, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int button) {
-                switch (button + 1) {
-                    case 1: setEmpty1(null);
-                        break;
-                    case 2: setEmpty2(null);
-                        break;
-                    case 3: setEmpty3(null);
+                        {"1", "2", "3"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        switch (button + 1) {
+                            case 1:
+                                setEmpty1(null);
+                                break;
+                            case 2:
+                                setEmpty2(null);
+                                break;
+                            case 3:
+                                setEmpty3(null);
+                        }
+                        dbOpenHelper.setAsToday(id, button + 1);
+                    }
                 }
-                dbOpenHelper.setAsToday(id, button + 1);
-            }
-        }
         );
         builder.create().show();
     }
-    public void setEmpty1 (View view) {
+
+    public void setEmpty1(View view) {
         Cursor cursor = dbOpenHelper.getAllRows();
         int usedToday = 0;
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
                 if (usedToday == 1 || usedToday == -1) {
@@ -198,10 +207,11 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
         restartToday();
     }
-    public void setEmpty2 (View view) {
+
+    public void setEmpty2(View view) {
         Cursor cursor = dbOpenHelper.getAllRows();
         int usedToday = 0;
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
                 if (usedToday == 2 || usedToday == -2) {
@@ -212,11 +222,13 @@ public class MainActivity extends AppCompatActivity {
         }
         cursor.close();
         restartToday();
+        populateListView();
     }
-    public void setEmpty3 (View view) {
+
+    public void setEmpty3(View view) {
         Cursor cursor = dbOpenHelper.getAllRows();
         int usedToday = 0;
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
                 if (usedToday == 3 || usedToday == -3) {
@@ -227,56 +239,108 @@ public class MainActivity extends AppCompatActivity {
         }
         cursor.close();
         restartToday();
+        populateListView();
     }
-    public void setFinished1 (View view) {
+
+    public void setFinished1(View view) {
         Cursor cursor = dbOpenHelper.getAllRows();
         int usedToday = 0;
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
                 if (usedToday == 1) {
-                    dbOpenHelper.setAsToday(cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_ID)), -1);
+                    dbOpenHelper.deleteItem(cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_ID)));
                 }
                 cursor.moveToNext();
             }
         }
         cursor.close();
         restartToday();
+        populateListView();
+        Toast.makeText(MainActivity.this, "Good Job! :)", Toast.LENGTH_SHORT).show();
     }
-    public void setFinished2 (View view) {
+
+    public void setFinished2(View view) {
         Cursor cursor = dbOpenHelper.getAllRows();
         int usedToday = 0;
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
                 if (usedToday == 2) {
-                    dbOpenHelper.setAsToday(cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_ID)), -2);
+                    dbOpenHelper.deleteItem(cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_ID)));
                 }
                 cursor.moveToNext();
             }
         }
         cursor.close();
         restartToday();
+        Toast.makeText(MainActivity.this, "Good Job! :)", Toast.LENGTH_SHORT).show();
     }
-    public void setFinished3 (View view) {
+
+    public void setFinished3(View view) {
         Cursor cursor = dbOpenHelper.getAllRows();
         int usedToday = 0;
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
                 if (usedToday == 3) {
-                    dbOpenHelper.setAsToday(cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_ID)), -3);
+                    dbOpenHelper.deleteItem(cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_ID)));
                 }
                 cursor.moveToNext();
             }
         }
         cursor.close();
         restartToday();
+        Toast.makeText(MainActivity.this, "Good Job! :)", Toast.LENGTH_SHORT).show();
     }
+
     public void restartToday() {
         MasterListFragment masterListFragment = new MasterListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_id, masterListFragment).commit();
         TodayFragment todayFragment = new TodayFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_id, todayFragment).commit();
+    }
+    public void TodayEmptyMessage(View view) {
+        Toast.makeText(MainActivity.this, "Go to the master list tab to choose a task to add here.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.example.bryan.focusredo/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.example.bryan.focusredo/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }

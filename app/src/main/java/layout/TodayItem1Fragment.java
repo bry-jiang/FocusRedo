@@ -18,6 +18,8 @@ import com.example.bryan.focusredo.R;
  */
 public class TodayItem1Fragment extends Fragment {
     TextView placeHolder1;
+    TextView i1;
+    TextView u1;
     DBOpenHelper dbOpenHelper;
     TodayFragment todayFragment;
 
@@ -27,8 +29,7 @@ public class TodayItem1Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_today_item1, container, false);
 
@@ -42,8 +43,14 @@ public class TodayItem1Fragment extends Fragment {
                 usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
                 if (usedToday == 1) {
                     String text = cursor.getString(cursor.getColumnIndex(dbOpenHelper.ITEM_TEXT));
+                    String importance = cursor.getString(cursor.getColumnIndex(dbOpenHelper.ITEM_IMPORTANCE));
+                    String urgency = cursor.getString(cursor.getColumnIndex(dbOpenHelper.ITEM_URGENCY));
                     placeHolder1 = (TextView) view.findViewById(R.id.PlaceHolder1);
+                    i1 = (TextView) view.findViewById(R.id.i1);
+                    u1 = (TextView) view.findViewById(R.id.u1);
                     placeHolder1.setText(text);
+                    i1.setText(importance);
+                    u1.setText(urgency);
                 }
                 cursor.moveToNext();
             }

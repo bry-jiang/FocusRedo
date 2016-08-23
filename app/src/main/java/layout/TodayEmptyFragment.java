@@ -27,4 +27,5 @@ public class TodayEmptyFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_today_empty, container, false);
     }
 
+
 }

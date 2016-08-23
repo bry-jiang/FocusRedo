@@ -1,58 +1,88 @@
 package layout;
 
-import android.database.Cursor;
+import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
-import com.example.bryan.focusredo.DBOpenHelper;
 import com.example.bryan.focusredo.R;
 
-import java.util.ArrayList;
-
 public class FinishedFragment extends Fragment {
+    AlarmManager alarmManager;
+    TimePicker timePicker;
+    TextView alarmText;
+    PendingIntent pendingIntent;
 
-    public FinishedFragment() {
-        // Required empty public constructor
-    }
+    public FinishedFragment() {}
 
+    @TargetApi(Build.VERSION_CODES.N)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_finished, container, false);
-        ArrayList<String> itemsArrayList = new ArrayList<>();
-        DBOpenHelper dbOpenHelper = new DBOpenHelper(getActivity());
-        Cursor cursor = dbOpenHelper.getAllRows();
-        int usedToday = 0;
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                usedToday = cursor.getInt(cursor.getColumnIndex(dbOpenHelper.ITEM_USED_TODAY));
-                if (usedToday == -1 || usedToday == -2 || usedToday == -3) {
-                    String text = cursor.getString(cursor.getColumnIndex(DBOpenHelper.ITEM_TEXT));
-                    itemsArrayList.add(text);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View  view = inflater.inflate(R.layout.fragment_finished, container, false);
+
+        alarmText = (TextView) view.findViewById(R.id.alarmText);
+        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        timePicker = (TimePicker) view.findViewById(R.id.timePicker);
+
+        final Button setAlarm = (Button) view.findViewById(R.id.setAlarm);
+        final Button unsetAlarm = (Button) view.findViewById(R.id.unsetAlarm);
+        final Calendar calendar = Calendar.getInstance();
+
+        setAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
+                calendar.set(Calendar.MINUTE, timePicker.getMinute());
+                alarmText.setText("Alarm set");
+
+                Intent intent = new Intent(view.getContext(), AlarmReceiver.class);
+
+                int hour = timePicker.getHour();
+                int min = timePicker.getMinute();
+
+                String hourString = String.valueOf(hour);
+                String minString = String.valueOf(min);
+
+                String AMPM = "AM";
+
+                if (hour > 12) {
+                    hour -= 12;
+                    AMPM = "PM";
+                    hourString = String.valueOf(hour);
                 }
-                cursor.moveToNext();
+                if (min < 10) {
+                    minString = "0" + String.valueOf(min);
+                }
+
+                alarmText.setText("Alarm set to " + hourString + ":" + minString + AMPM);
+                pendingIntent = pendingIntent.getBroadcast(view.getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+
             }
-        }
+        });
 
-        String[] itemsArray = new String[itemsArrayList.size()];
-        for (int i = 0; i < itemsArrayList.size(); i++) {
-            itemsArray[i] = itemsArrayList.get(i);
-        }
-
-        ListView listView = (ListView) view.findViewById(R.id.FinishedList);
-        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                itemsArray
-        );
-        listView.setAdapter(listViewAdapter);
+        unsetAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alarmText.setText("Alarm is unset");
+                alarmManager.cancel(pendingIntent);
+            }
+        });
 
         return view;
     }
+
 }

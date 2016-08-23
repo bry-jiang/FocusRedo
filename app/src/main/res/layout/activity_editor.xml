@@ -35,26 +35,32 @@
             android:layout_weight="1"
             android:orientation="horizontal">
             <Button
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="A"
-                android:onClick="setImportanceA" />
+                android:text="Very Important"
+                android:onClick="setImportanceA"
+                android:layout_marginTop="20dp"
+                android:background="#fed75f" />
             <Button
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="B"
-                android:onClick="setImportanceB" />
+                android:text="Important"
+                android:onClick="setImportanceB"
+                android:layout_marginTop="20dp"
+                android:background="#ffe190" />
             <Button
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="C"
-                android:onClick="setImportanceC" />
+                android:text="Not Important"
+                android:onClick="setImportanceC"
+                android:layout_marginTop="20dp"
+                android:background="#fde9b8" />
         </LinearLayout>
 
         <TextView
@@ -62,29 +68,69 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Pick importance"
-            android:id="@+id/textView6" />
+            android:id="@+id/textView6"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:text="Tags" />
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:text="Save(Temporary) - Deadline"
-            android:id="@+id/save_id"
-            android:onClick="saveItem" />
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/button"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="Very Urgent"
+                android:layout_marginTop="20dp"
+                android:onClick="setUrgency1"
+                android:background="#ec5757" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:text="Urgent"
+                android:id="@+id/button2"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_marginTop="20dp"
+                android:onClick="setUrgency2"
+                android:background="#ef8a8a" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:text="Not urgent"
+                android:id="@+id/button3"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_marginTop="20dp"
+                android:onClick="setUrgency3"
+                android:background="#f3d4d4" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Pick urgency"
+            android:id="@+id/textView3"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="2dp" />
+    </RelativeLayout>
 
 
 </LinearLayout>
