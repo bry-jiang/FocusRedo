@@ -110,11 +110,10 @@ public class MainActivity extends AppCompatActivity {
         simpleCursorAdapter = new SimpleCursorAdapter(getBaseContext(), R.layout.list_item_layout, cursor, from, to, 0);
         ListView listView = (ListView) findViewById(R.id.main_activity_list_view);
         listView.setAdapter(simpleCursorAdapter);
-        cursor.close();
     }
 
     private void initBar() {
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem("Today", R.drawable.goal, R.color.colorPrimary);
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem("Focus", R.drawable.goal, R.color.colorPrimary);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem("Master List", R.drawable.crown, R.color.colorAccent);
         AHBottomNavigationItem item3 = new AHBottomNavigationItem("Reminder", R.drawable.reminder, R.color.colorBottomNavigationAccent);
 
@@ -158,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (position == 1) {
                     MasterListFragment masterListFragment = new MasterListFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_id, masterListFragment).commit();
+                    restartMaster();
                 } else if (position == 2) {
                     FinishedFragment finishedFragment = new FinishedFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_id, finishedFragment).commit();
@@ -171,6 +171,13 @@ public class MainActivity extends AppCompatActivity {
                 // Manage the new y position
             }
         });
+    }
+
+    private void restartMaster() {
+        TodayFragment todayFragment = new TodayFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_id, todayFragment).commit();
+        MasterListFragment masterListFragment = new MasterListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_id, masterListFragment).commit();
     }
 
     private void setAsToday(final long id) {
@@ -198,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setEmpty1(View view) {
+        View temp = view;
         Cursor cursor = dbOpenHelper.getAllRows();
         int usedToday = 0;
         if (cursor.moveToFirst()) {
@@ -211,9 +219,14 @@ public class MainActivity extends AppCompatActivity {
         }
         cursor.close();
         restartToday();
+        if (temp != null) {
+            Toast.makeText(MainActivity.this, "Task dismissed", Toast.LENGTH_SHORT).show();
+        }
+        populateListView();
     }
 
     public void setEmpty2(View view) {
+        View temp = view;
         Cursor cursor = dbOpenHelper.getAllRows();
         int usedToday = 0;
         if (cursor.moveToFirst()) {
@@ -227,10 +240,14 @@ public class MainActivity extends AppCompatActivity {
         }
         cursor.close();
         restartToday();
+        if (temp != null) {
+            Toast.makeText(MainActivity.this, "Task dismissed", Toast.LENGTH_SHORT).show();
+        }
         populateListView();
     }
 
     public void setEmpty3(View view) {
+        View temp = view;
         Cursor cursor = dbOpenHelper.getAllRows();
         int usedToday = 0;
         if (cursor.moveToFirst()) {
@@ -244,6 +261,9 @@ public class MainActivity extends AppCompatActivity {
         }
         cursor.close();
         restartToday();
+        if (temp != null) {
+            Toast.makeText(MainActivity.this, "Task dismissed", Toast.LENGTH_SHORT).show();
+        }
         populateListView();
     }
 

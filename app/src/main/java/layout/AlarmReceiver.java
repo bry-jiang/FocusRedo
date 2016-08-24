@@ -6,13 +6,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 public class AlarmReceiver extends BroadcastReceiver{
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i("We are in the receiver", "yay");
 
         String[] planningQuotes = {
                 "Productivity is never an accident. It is always the result of a commitment to excellence, intelligent planning, and focused effort. Paul J. Meyer",
@@ -35,7 +33,7 @@ public class AlarmReceiver extends BroadcastReceiver{
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(android.R.drawable.arrow_up_float)
-                .setContentTitle("Time to set declare tomorrow's focus!")
+                .setContentTitle("Declare tomorrow's focus!")
                 .setContentText(planningQuotes[chooseRandom(planningQuotes.length)])
                 .setAutoCancel(true);
         notificationManager.notify(0, builder.build());
