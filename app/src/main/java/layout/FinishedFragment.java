@@ -17,7 +17,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.example.bryan.focusredo.R;
+import com.bryanjiang.bryan.focusredo.R;
+
 
 public class FinishedFragment extends Fragment {
     AlarmManager alarmManager;

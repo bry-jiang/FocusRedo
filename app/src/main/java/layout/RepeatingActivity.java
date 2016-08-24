@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.bryan.focusredo.R;
+import com.bryanjiang.bryan.focusredo.R;
 
 public class RepeatingActivity extends Service {
 

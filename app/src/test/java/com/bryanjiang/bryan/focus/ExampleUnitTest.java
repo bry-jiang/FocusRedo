@@ -1,4 +1,4 @@
-package com.example.bryan.focusredo;
+package com.bryanjiang.bryan.focus;
 
 import org.junit.Test;
 

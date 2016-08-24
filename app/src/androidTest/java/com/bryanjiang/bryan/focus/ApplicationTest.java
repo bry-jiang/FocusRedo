@@ -1,4 +1,4 @@
-package com.example.bryan.focusredo;
+package com.bryanjiang.bryan.focus;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

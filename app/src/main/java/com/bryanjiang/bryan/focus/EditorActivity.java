@@ -1,4 +1,4 @@
-package com.example.bryan.focusredo;
+package com.bryanjiang.bryan.focus;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -7,7 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.bryanjiang.bryan.focusredo.R;
+
 
 public class EditorActivity extends AppCompatActivity {
     DBOpenHelper dbOpenHelper;
@@ -89,9 +91,6 @@ public class EditorActivity extends AppCompatActivity {
         String newText = editText.getText().toString().trim();
         if (isNew) {
             if (newText.length() != 0) {
-                if (newText.length() >= 20) {
-                    Toast.makeText(EditorActivity.this, "Your description might be too long! It is best to keep it simple", Toast.LENGTH_SHORT).show();
-                }
                 dbOpenHelper.addItem(newText, importance, urgency, 0);
             }
         } else {

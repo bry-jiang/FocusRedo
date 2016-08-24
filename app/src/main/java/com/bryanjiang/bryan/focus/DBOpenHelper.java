@@ -1,4 +1,4 @@
-package com.example.bryan.focusredo;
+package com.bryanjiang.bryan.focus;
 
 import android.content.ContentValues;
 import android.content.Context;

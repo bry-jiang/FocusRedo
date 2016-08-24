@@ -9,8 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.bryan.focusredo.DBOpenHelper;
-import com.example.bryan.focusredo.R;
+import com.bryanjiang.bryan.focus.DBOpenHelper;
+import com.bryanjiang.bryan.focusredo.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
